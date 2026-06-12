@@ -16,7 +16,9 @@ A lightweight Flask-based camera upload tool.
 git clone https://github.com/muskanse79-hack/Camra_hack.git
 cd Camra_hack 
 pip install -r requirements.txt
-python server.py
+chmod +x start.sh
+./start.sh
+
 ```
 
 ## Cloudflare Tunnel
