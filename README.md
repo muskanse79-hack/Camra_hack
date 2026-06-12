@@ -13,10 +13,10 @@ A lightweight Flask-based camera upload tool.
 ## Installation
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY.git
-cd REPOSITORY
+git clone https://github.com/muskanse79-hack/Camra_hack.git
+cd Camra_hack 
 pip install -r requirements.txt
-python app.py
+python server.py
 ```
 
 ## Cloudflare Tunnel
